@@ -1,3 +1,5 @@
+# Pokemon
+
 This is a Kevin Nguyen Pokemon Database
 
 I have base stats for all pokemon
@@ -16,11 +18,8 @@ To Do List
 Set up git for This
 make website for this
 
-test
 
 git add .
 git commit -m "message"
 git push origin main
 
-
-# Pokemon
