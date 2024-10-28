@@ -25,6 +25,17 @@ return new class extends Migration
             $table->integer('Sp_Atk');
             $table->integer('Sp_Def');
             $table->integer('Speed');
+            $table->integer('Ability1');
+            $table->integer('Ability2');
+            $table->integer('Hidden_Ability');
+            $table->integer('Generation');
+            $table->integer('Classification');
+            $table->integer('Held_Item');
+            $table->integer('Common_Moves');
+            $table->integer('EV_Spread');
+            $table->integer('Weaknesses');
+            $table->integer('Resistances');
+            $table->integer('Immunities');
         });
     }
 

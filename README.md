@@ -25,10 +25,3 @@ make website for this
 See how to match up pokemon from different sites  
 Scrape Pikalytics each format->Put in DB for the ones you find, but don't replace(some aren't in national dex for gen 9)   
     which also gets u the most recent data  
-
-
-
-git add .  
-git commit -m "message"  
-git push origin main  
-
