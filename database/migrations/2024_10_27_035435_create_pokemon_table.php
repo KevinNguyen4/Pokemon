@@ -13,29 +13,31 @@ return new class extends Migration
     {
         Schema::create('pokemon', function (Blueprint $table) {
             $table->id();
-            $table->integer('ID');
-            $table->string('Name');
-            $table->string('Form');
-            $table->string('Type1');
-            $table->string('Type2');
-            $table->integer('Total_Stats');
-            $table->integer('HP');
-            $table->integer('Attack');
-            $table->integer('Defense');
-            $table->integer('Sp_Atk');
-            $table->integer('Sp_Def');
-            $table->integer('Speed');
-            $table->integer('Ability1');
-            $table->integer('Ability2');
-            $table->integer('Hidden_Ability');
+            $table->integer('Number'); //Done
+            $table->string('Name'); //Done
+            $table->string('Form'); //idk if needed, form is in the name, but a little weird
+            $table->string('Type1'); //Done
+            $table->string('Type2')->nullable(); //Done
+            $table->integer('Total_Stats'); //Done
+            $table->integer('HP'); //Done
+            $table->integer('Attack'); //Done
+            $table->integer('Defense'); //Done
+            $table->integer('Sp_Atk'); //Done
+            $table->integer('Sp_Def'); //Done
+            $table->integer('Speed'); //Done
+
+            //cue off of primary key(Number/Name) to match these
+            $table->string('Ability1');
+            $table->string('Ability2')->nullable();
+            $table->string('Hidden_Ability')->nullable();
             $table->integer('Generation');
-            $table->integer('Classification');
-            $table->integer('Held_Item');
-            $table->integer('Common_Moves');
-            $table->integer('EV_Spread');
-            $table->integer('Weaknesses');
-            $table->integer('Resistances');
-            $table->integer('Immunities');
+            $table->string('Classification')->nullable();
+            $table->string('Held_Item')->nullable();
+            $table->string('Common_Moves')->nullable();
+            $table->string('EV_Spread')->nullable();
+            $table->string('Weaknesses');
+            $table->string('Resistances');
+            $table->string('Immunities')->nullable();
         });
     }
 
