@@ -29,6 +29,8 @@ See how to update it instead of dropping and redoing it each time lol
 names might be a little weird
 primary keys for number/name
 get pictures for each pokemon
+filter for stats(needs a little work)(sorting by number makes it wacky)
+search function for a pokemon, by name or number
 
 
 

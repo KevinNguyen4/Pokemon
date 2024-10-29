@@ -18,4 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', [PokemonController::class, 'index']);
+Route::get('/', [PokemonController::class, 'index'])->name('pokemon.search');
