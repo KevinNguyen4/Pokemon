@@ -65,3 +65,40 @@ tr:hover {
 .border-b {
     border-bottom: 1px solid #e2e8f0;
 }
+
+th {
+    cursor: pointer;
+}
+th span {
+    display: flex;
+    align-items: center;
+}
+th span i {
+    margin-left: 5px;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-form input {
+    flex: 1;
+}
+
+.search-form button,
+.search-form .button {
+    background-color: #003366; /* Dark blue background */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px; /* Rounded corners */
+    cursor: pointer;
+    text-decoration: none; /* Remove underline for anchor tag */
+}
+
+.search-form button:hover,
+.search-form .button:hover {
+    background-color: #002244; /* Darker blue on hover */
+}

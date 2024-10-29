@@ -50,3 +50,29 @@ function getTypeColor(type) {
             return 'transparent'; // Default background
     }
 }
+
+let currentSort = {
+    stat: '',
+    order: 'desc'
+};
+
+function sortTable(stat) {
+    const tableBody = document.getElementById('pokemon-table-body');
+    const rows = Array.from(tableBody.querySelectorAll('tr'));
+
+    if (currentSort.stat === stat) {
+        currentSort.order = currentSort.order === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSort.stat = stat;
+        currentSort.order = 'desc';
+    }
+
+    rows.sort((a, b) => {
+        const aStat = parseInt(a.querySelector(`td[data-stat="${stat}"]`).textContent);
+        const bStat = parseInt(b.querySelector(`td[data-stat="${stat}"]`).textContent);
+        return currentSort.order === 'asc' ? aStat - bStat : bStat - aStat;
+    });
+
+    // Append sorted rows back to the table body
+    rows.forEach(row => tableBody.appendChild(row));
+}
