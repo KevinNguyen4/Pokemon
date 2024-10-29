@@ -9,7 +9,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f7fafc;
+    background-color: #D1E5D9; 
     color: #333;
 }
 
@@ -33,10 +33,11 @@ h1 {
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
+    background-color: #2E6F40;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
+    border: 2px solid #333; 
 }
 
 th, td {

@@ -1,3 +1,9 @@
+<!-- 
+The CSS for this one is public/css/app.css
+The JS is public/js/custom.js
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,12 +37,8 @@
                         <tr class="border-b">
                             <td>{{ $pokemon->number }}</td>
                             <td>{{ $pokemon->name }}</td>
-                            <td class="{{ strtolower($pokemon->type1) }}">
-                                {{ $pokemon->type1 }}
-                            </td>
-                            <td class="{{ strtolower($pokemon->type2) }}">
-                                {{ $pokemon->type2 }}
-                            </td>
+                            <td class="type1">{{ $pokemon->type1 }}</td>
+                            <td class="type2">{{ $pokemon->type2 }}</td>
                             <td>{{ $pokemon->total }}</td>
                             <td>{{ $pokemon->hp }}</td>
                             <td>{{ $pokemon->attack }}</td>
