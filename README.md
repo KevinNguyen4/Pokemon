@@ -28,6 +28,7 @@ Scrape Pikalytics each format->Put in DB for the ones you find, but don't replac
 See how to update it instead of dropping and redoing it each time lol
 names might be a little weird
 primary keys for number/name
+get pictures for each pokemon
 
 
 
