@@ -80,31 +80,57 @@ class ScrapingService
                 $weaknesses = array_merge($weaknesses, $weaknesses2);
             }
             
+            
             $resistances = $typeChart[$type1]['resistances'];
             if($type2 != null){
                 $resistances2 = $typeChart[$type2]['resistances'];
                 $resistances = array_merge($resistances, $resistances2);
             }
 
+
             $immunities = $typeChart[$type1]['immunities'];
             if($type2 != null){
                 $immunities2 = $typeChart[$type2]['immunities'];
                 $immunities = array_merge($immunities, $immunities2);
             }
+
+            //remove dupes
+            $weaknesses = array_unique($weaknesses);
+            $resistances = array_unique($resistances);
+            $immunities = array_unique($immunities);
+
+
+            //so now they have all the data, now we have to cancel them out
+            
+            // If there is a type in both weaknesses and resistances, remove it from both
+            $commonWeakResist = array_intersect($weaknesses, $resistances);
+            $weaknesses = array_diff($weaknesses, $commonWeakResist);
+            $resistances = array_diff($resistances, $commonWeakResist);
+
+            // If there is a type in immunities, remove it from both weaknesses and resistances
+            $weaknesses = array_diff($weaknesses, $immunities);
+            $resistances = array_diff($resistances, $immunities);
+
+
+            //now we order the 3 lists based on type ordering
+            $order = [
+                'Normal', 'Fire', 'Water', 'Electric', 'Grass', 'Ice', 'Fighting', 'Poison', 'Ground', 'Flying', 
+                'Psychic', 'Bug', 'Rock', 'Ghost', 'Dragon', 'Dark', 'Steel', 'Fairy'
+            ];
+            
+            // Custom sorting function
+            $sortFunction = function($a, $b) use ($order) {
+                $posA = array_search($a, $order);
+                $posB = array_search($b, $order);
+                return $posA - $posB;
+            };
+            
+            // Sort the arrays based on the custom order
+            usort($weaknesses, $sortFunction);
+            usort($resistances, $sortFunction);
+            usort($immunities, $sortFunction);
             
         }
-
-        // Remove duplicates
-        $weaknesses = array_unique($weaknesses);
-        $resistances = array_unique($resistances);
-        $immunities = array_unique($immunities);
-
-        // Cancel out weaknesses and resistances
-        $weaknesses = array_diff($weaknesses, $resistances);
-        $resistances = array_diff($resistances, $weaknesses);
-
-        // Cancel out weaknesses and immunities
-        $weaknesses = array_diff($weaknesses, $immunities);
 
         return [
             'weaknesses' => $weaknesses,
