@@ -21,7 +21,6 @@ https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_National_Pok%C3%
 
 
 To Do List  
-make website for this  
 See how to match up pokemon from different sites  
 Scrape Pikalytics each format->Put in DB for the ones you find, but don't replace(some aren't in national dex for gen 9)   
     which also gets u the most recent data  
@@ -30,8 +29,7 @@ names might be a little weird
 primary keys for number/name
 get pictures for each pokemon
 filter for stats(needs a little work)(sorting by number makes it wacky)
-search function for a pokemon, by name or number
-
+need to cancel out some weaknesses/immunities/resistances, no logic here yet
 
 
 

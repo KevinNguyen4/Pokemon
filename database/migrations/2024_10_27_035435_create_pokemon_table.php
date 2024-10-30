@@ -35,9 +35,9 @@ return new class extends Migration
             $table->string('Held_Item')->nullable();
             $table->string('Common_Moves')->nullable();
             $table->string('EV_Spread')->nullable();
-            $table->string('Weaknesses');
-            $table->string('Resistances');
-            $table->string('Immunities')->nullable();
+            $table->json('weaknesses')->nullable();
+            $table->json('resistances')->nullable();
+            $table->json('immunities')->nullable();
         });
     }
 
