@@ -21,17 +21,20 @@
             <table>
                 <thead>
                     <tr>
-                        <th onclick="sortTable('number')"><span>Number <i class="fa-solid fa-sort"></i></span></th>
+                        <th class="number-column" onclick="sortTable('number')"><span>Number <i class="fa-solid fa-sort"></i></span></th>
                         <th>Name</th>
                         <th>Type 1</th>
                         <th>Type 2</th>
                         <th onclick="sortTable('total')"><span>Total <i class="fa-solid fa-sort"></i></span></th>
                         <th onclick="sortTable('hp')"><span>HP <i class="fa-solid fa-sort"></i></span></th>
-                        <th onclick="sortTable('attack')"><span>Attack <i class="fa-solid fa-sort"></i></span></th>
-                        <th onclick="sortTable('defense')"><span>Defense <i class="fa-solid fa-sort"></i></span></th>
-                        <th onclick="sortTable('sp_atk')"><span>Sp.&nbsp;Atk <i class="fa-solid fa-sort"></i></span></th>
-                        <th onclick="sortTable('sp_def')"><span>Sp.&nbsp;Def <i class="fa-solid fa-sort"></i></span></th>
+                        <th onclick="sortTable('attack')"><span>Atk <i class="fa-solid fa-sort"></i></span></th>
+                        <th onclick="sortTable('defense')"><span>Def <i class="fa-solid fa-sort"></i></span></th>
+                        <th onclick="sortTable('sp_atk')"><span>Sp.Atk <i class="fa-solid fa-sort"></i></span></th>
+                        <th onclick="sortTable('sp_def')"><span>Sp.Def <i class="fa-solid fa-sort"></i></span></th>
                         <th onclick="sortTable('speed')"><span>Speed <i class="fa-solid fa-sort"></i></span></th>
+                        <th class="weaknesses-column">Weaknesses</th>
+                        <th class="resistances-column">Resistances</th>
+                        <th>Immunities</th>
                     </tr>
                 </thead>
                 <tbody id="pokemon-table-body">
@@ -48,6 +51,9 @@
                             <td data-stat="sp_atk">{{ $pokemon->sp_atk }}</td>
                             <td data-stat="sp_def">{{ $pokemon->sp_def }}</td>
                             <td data-stat="speed">{{ $pokemon->speed }}</td>
+                            <td class="weaknesses-column weaknesses">{{ implode(' ', json_decode($pokemon->weaknesses, true)) }}</td>
+                            <td class="resistances-column resistances">{{ implode(' ', json_decode($pokemon->resistances, true)) }}</td>
+                            <td class="immunities">{{ implode(' ', json_decode($pokemon->immunities, true)) }}</td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -38,10 +38,11 @@ table {
     border-radius: 8px;
     overflow: hidden;
     border: 2px solid #333; 
+    font-size: 12px; /* Smaller font size for table content */
 }
 
 th, td {
-    padding: 12px 15px;
+    padding: 4px 10px;
     text-align: left;
 }
 
@@ -75,6 +76,17 @@ th span {
 }
 th span i {
     margin-left: 5px;
+}
+
+th.number-column {
+    width: 50px; /* Smaller width for the number column */
+}
+
+th.weaknesses-column, td.weaknesses-column {
+    width: 50px !important; /* Smaller width for the weaknesses column */
+}
+th.resistances-column, td.resistances-column {
+    width: 50px !important; /* Smaller width for the resistances column */
 }
 
 .search-form {

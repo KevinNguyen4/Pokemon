@@ -24,8 +24,6 @@ class ScrapingService
 
             $weaknessesResistancesImmunities = $this->calculateWeaknessesResistancesImmunities($type1, $type2);
 
-            //print_r(' END ');
-
             $pokemon = [
                 'number' => $node->filter('td')->eq(0)->text(),
                 'name' => $node->filter('td')->eq(1)->text(),
@@ -38,9 +36,9 @@ class ScrapingService
                 'sp_atk' => $node->filter('td')->eq(7)->text(),
                 'sp_def' => $node->filter('td')->eq(8)->text(),
                 'speed' => $node->filter('td')->eq(9)->text(),
-                'weaknesses' => json_encode($weaknessesResistancesImmunities['weaknesses']),
-                'resistances' => json_encode($weaknessesResistancesImmunities['resistances']),
-                'immunities' => json_encode($weaknessesResistancesImmunities['immunities']),
+                'weaknesses' => json_encode(array_values($weaknessesResistancesImmunities['weaknesses'])),
+                'resistances' => json_encode(array_values($weaknessesResistancesImmunities['resistances'])),
+                'immunities' => json_encode(array_values($weaknessesResistancesImmunities['immunities'])),
             ];
 
             DB::table('pokemon')->insert($pokemon);
@@ -50,38 +48,32 @@ class ScrapingService
     private function calculateWeaknessesResistancesImmunities($type1, $type2 = null)
     {
         $typeChart = [
-            'Normal' => ['weaknesses' => ['fighting'], 'resistances' => [], 'immunities' => ['ghost']],
-            'Fire' => ['weaknesses' => ['water', 'ground', 'rock'], 'resistances' => ['fire', 'grass', 'ice', 'bug', 'steel', 'fairy'], 'immunities' => []],
-            'Water' => ['weaknesses' => ['electric', 'grass'], 'resistances' => ['fire', 'water', 'ice', 'steel'], 'immunities' => []],
-            'Electric' => ['weaknesses' => ['ground'], 'resistances' => ['electric', 'flying', 'steel'], 'immunities' => []],
-            'Grass' => ['weaknesses' => ['fire', 'ice', 'poison', 'flying', 'bug'], 'resistances' => ['water', 'electric', 'grass', 'ground'], 'immunities' => []],
-            'Ice' => ['weaknesses' => ['fire', 'fighting', 'rock', 'steel'], 'resistances' => ['ice'], 'immunities' => []],
-            'Fighting' => ['weaknesses' => ['flying', 'psychic', 'fairy'], 'resistances' => ['bug', 'rock', 'dark'], 'immunities' => []],
-            'Poison' => ['weaknesses' => ['ground', 'psychic'], 'resistances' => ['grass', 'fighting', 'poison', 'bug', 'fairy'], 'immunities' => []],
-            'Ground' => ['weaknesses' => ['water', 'ice', 'grass'], 'resistances' => ['poison', 'rock'], 'immunities' => ['electric']],
-            'Flying' => ['weaknesses' => ['electric', 'ice', 'rock'], 'resistances' => ['grass', 'fighting', 'bug'], 'immunities' => ['ground']],
-            'Psychic' => ['weaknesses' => ['bug', 'ghost', 'dark'], 'resistances' => ['fighting', 'psychic'], 'immunities' => []],
-            'Bug' => ['weaknesses' => ['fire', 'flying', 'rock'], 'resistances' => ['grass', 'fighting', 'ground'], 'immunities' => []],
-            'Rock' => ['weaknesses' => ['water', 'grass', 'fighting', 'ground', 'steel'], 'resistances' => ['normal', 'fire', 'poison', 'flying'], 'immunities' => []],
-            'Ghost' => ['weaknesses' => ['ghost', 'dark'], 'resistances' => ['poison', 'bug'], 'immunities' => ['normal', 'fighting']],
-            'Dragon' => ['weaknesses' => ['ice', 'dragon', 'fairy'], 'resistances' => ['fire', 'water', 'electric', 'grass'], 'immunities' => []],
-            'Dark' => ['weaknesses' => ['fighting', 'bug', 'fairy'], 'resistances' => ['ghost', 'dark'], 'immunities' => ['psychic']],
-            'Steel' => ['weaknesses' => ['fire', 'fighting', 'ground'], 'resistances' => ['normal', 'grass', 'ice', 'flying', 'psychic', 'bug', 'rock', 'dragon', 'steel', 'fairy'], 'immunities' => ['poison']],
-            'Fairy' => ['weaknesses' => ['poison', 'steel'], 'resistances' => ['fighting', 'bug', 'dark'], 'immunities' => ['dragon']],
+            'Normal' => ['weaknesses' => ['Fighting'], 'resistances' => [], 'immunities' => ['Ghost']],
+            'Fire' => ['weaknesses' => ['Water', 'Ground', 'Rock'], 'resistances' => ['Fire', 'Grass', 'Ice', 'Bug', 'Steel', 'Fairy'], 'immunities' => []],
+            'Water' => ['weaknesses' => ['Electric', 'Grass'], 'resistances' => ['Fire', 'Water', 'Ice', 'Steel'], 'immunities' => []],
+            'Electric' => ['weaknesses' => ['Ground'], 'resistances' => ['Electric', 'Flying', 'Steel'], 'immunities' => []],
+            'Grass' => ['weaknesses' => ['Fire', 'Ice', 'Poison', 'Flying', 'Bug'], 'resistances' => ['Water', 'Electric', 'Grass', 'Ground'], 'immunities' => []],
+            'Ice' => ['weaknesses' => ['Fire', 'Fighting', 'Rock', 'Steel'], 'resistances' => ['Ice'], 'immunities' => []],
+            'Fighting' => ['weaknesses' => ['Flying', 'Psychic', 'Fairy'], 'resistances' => ['Bug', 'Rock', 'Dark'], 'immunities' => []],
+            'Poison' => ['weaknesses' => ['Ground', 'Psychic'], 'resistances' => ['Grass', 'Fighting', 'Poison', 'Bug', 'Fairy'], 'immunities' => []],
+            'Ground' => ['weaknesses' => ['Water', 'Ice', 'Grass'], 'resistances' => ['Poison', 'Rock'], 'immunities' => ['Electric']],
+            'Flying' => ['weaknesses' => ['Electric', 'Ice', 'Rock'], 'resistances' => ['Grass', 'Fighting', 'Bug'], 'immunities' => ['Ground']],
+            'Psychic' => ['weaknesses' => ['Bug', 'Ghost', 'Dark'], 'resistances' => ['Fighting', 'Psychic'], 'immunities' => []],
+            'Bug' => ['weaknesses' => ['Fire', 'Flying', 'Rock'], 'resistances' => ['Grass', 'Fighting', 'Ground'], 'immunities' => []],
+            'Rock' => ['weaknesses' => ['Water', 'Grass', 'Fighting', 'Ground', 'Steel'], 'resistances' => ['Normal', 'Fire', 'Poison', 'Flying'], 'immunities' => []],
+            'Ghost' => ['weaknesses' => ['Ghost', 'Dark'], 'resistances' => ['Poison', 'Bug'], 'immunities' => ['Normal', 'Fighting']],
+            'Dragon' => ['weaknesses' => ['Ice', 'Dragon', 'Fairy'], 'resistances' => ['Fire', 'Water', 'Electric', 'Grass'], 'immunities' => []],
+            'Dark' => ['weaknesses' => ['Fighting', 'Bug', 'Fairy'], 'resistances' => ['Ghost', 'Dark'], 'immunities' => ['Psychic']],
+            'Steel' => ['weaknesses' => ['Fire', 'Fighting', 'Ground'], 'resistances' => ['Normal', 'Grass', 'Ice', 'Flying', 'Psychic', 'Bug', 'Rock', 'Dragon', 'Steel', 'Fairy'], 'immunities' => ['Poison']],
+            'Fairy' => ['weaknesses' => ['Poison', 'Steel'], 'resistances' => ['Fighting', 'Bug', 'Dark'], 'immunities' => ['Dragon']],
         ];
 
         $weaknesses = [];
         $resistances = [];
         $immunities = [];
 
-        // print_r(' type1: ');
-        // print_r($type1);
-        // print_r(' type2: ');
-        // print_r($type2);
-
         foreach ([$type1, $type2] as $type) {
             
-            // print_r(' in loop');
             $weaknesses = $typeChart[$type1]['weaknesses'];
             if($type2 != null){
                 $weaknesses2 = $typeChart[$type2]['weaknesses'];
@@ -99,10 +91,6 @@ class ScrapingService
                 $immunities2 = $typeChart[$type2]['immunities'];
                 $immunities = array_merge($immunities, $immunities2);
             }
-
-
-            // $resistances = array_merge($resistances, $typeChart[$type]['resistances']);
-            // $immunities = array_merge($immunities, $typeChart[$type]['immunities']);
             
         }
 
