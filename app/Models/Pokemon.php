@@ -10,6 +10,8 @@ class Pokemon extends Model
     use HasFactory;
 
     protected $fillable = [
-        'number', 'name', 'type1', 'type2', 'total', 'hp', 'attack', 'defense', 'sp_atk', 'sp_def', 'speed'
+        'number', 'name', 'type1', 'type2', 'total', 'hp', 'attack', 'defense', 'sp_atk', 'sp_def', 'speed', 
+        'weaknesses', 'resistances', 'immunities', 'ability1', 'ability2', 'hidden_ability', 
+        'generation', 'classification', 'held_item', 'common_moves', 'ev_spread'
     ];
 }
