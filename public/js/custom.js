@@ -1,10 +1,40 @@
 // public/js/custom.js
 
+// document.addEventListener('DOMContentLoaded', function() {
+//     const typeCells = document.querySelectorAll('td.type1, td.type2, td.weaknesses, td.resistances, td.immunities');
+//     typeCells.forEach(cell => {
+//         const types = cell.textContent.trim().toLowerCase().split(' ');
+//         cell.textContent = '';
+//         types.forEach(type => {
+//             const span = document.createElement('span');
+//             span.textContent = type.charAt(0).toUpperCase() + type.slice(1); // Capitalize the first letter directly
+//             span.style.backgroundColor = getTypeColor(type);
+//             span.style.color = 'white'; // Optional: Set text color to white for better contrast
+//             span.style.padding = '2px 4px'; // Optional: Add some padding to the text
+//             span.style.borderRadius = '4px'; // Optional: Add rounded corners to the background
+//             span.style.marginRight = '4px'; // Optional: Add some margin between spans
+//             cell.appendChild(span);
+//         });
+//     });
+// });
+
+//works, but things are kinda squished together, need to space it out a bit but the format is good.
+//also need to space out the other columns correctly
 document.addEventListener('DOMContentLoaded', function() {
-    const typeCells = document.querySelectorAll('td.type1, td.type2');
+    const typeCells = document.querySelectorAll('td.type1, td.type2, td.weaknesses, td.resistances, td.immunities');
     typeCells.forEach(cell => {
-        const type = cell.textContent.trim().toLowerCase();
-        cell.style.backgroundColor = getTypeColor(type);
+        const types = cell.textContent.trim().toLowerCase().split(' ');
+        cell.innerHTML = ''; // Clear the cell content
+        types.forEach(type => {
+            const textNode = document.createTextNode(type.charAt(0).toUpperCase() + type.slice(1) + ' '); // Capitalize the first letter and add a space
+            const span = document.createElement('span');
+            span.style.backgroundColor = getTypeColor(type);
+            span.style.color = 'white'; // Optional: Set text color to white for better contrast
+            span.style.padding = '2px 4px'; // Optional: Add some padding to the text
+            span.style.borderRadius = '4px'; // Optional: Add rounded corners to the background
+            span.appendChild(textNode);
+            cell.appendChild(span);
+        });
     });
 });
 
@@ -50,6 +80,7 @@ function getTypeColor(type) {
             return 'transparent'; // Default background
     }
 }
+
 
 let currentSort = {
     stat: '',
