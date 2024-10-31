@@ -21,27 +21,27 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="number-column" onclick="sortTable('number')"><span>Number <i class="fa-solid fa-sort"></i></span></th>
-                        <th>Name</th>
+                        <th class="smaller-column" onclick="sortTable('number')"><span>Num <i class="fa-solid fa-sort"></i></span></th>
+                        <th class="small-column">Name</th>
                         <th>Type 1</th>
                         <th>Type 2</th>
-                        <th onclick="sortTable('total')"><span>Total <i class="fa-solid fa-sort"></i></span></th>
+                        <th class="small-column" onclick="sortTable('total')"><span>Total <i class="fa-solid fa-sort"></i></span></th>
                         <th onclick="sortTable('hp')"><span>HP <i class="fa-solid fa-sort"></i></span></th>
                         <th onclick="sortTable('attack')"><span>Atk <i class="fa-solid fa-sort"></i></span></th>
                         <th onclick="sortTable('defense')"><span>Def <i class="fa-solid fa-sort"></i></span></th>
-                        <th onclick="sortTable('sp_atk')"><span>Sp.Atk <i class="fa-solid fa-sort"></i></span></th>
-                        <th onclick="sortTable('sp_def')"><span>Sp.Def <i class="fa-solid fa-sort"></i></span></th>
-                        <th onclick="sortTable('speed')"><span>Speed <i class="fa-solid fa-sort"></i></span></th>
-                        <th class="weaknesses-column">Weaknesses</th>
-                        <th class="resistances-column">Resistances</th>
+                        <th class="smaller-column" onclick="sortTable('sp_atk')"><span>Sp.Atk <i class="fa-solid fa-sort"></i></span></th>
+                        <th class="smaller-column" onclick="sortTable('sp_def')"><span>Sp.Def <i class="fa-solid fa-sort"></i></span></th>
+                        <th class="smaller-column" onclick="sortTable('speed')"><span>Speed <i class="fa-solid fa-sort"></i></span></th>
+                        <th>Weaknesses</th>
+                        <th>Resistances</th>
                         <th>Immunities</th>
                     </tr>
                 </thead>
                 <tbody id="pokemon-table-body">
                     @foreach($pokemons as $pokemon)
                         <tr class="border-b">
-                            <td data-stat="number">{{ ltrim($pokemon->number, '0') }}</td>
-                            <td>{{ $pokemon->name }}</td>
+                            <td class="smaller-column" data-stat="number">{{ ltrim($pokemon->number, '0') }}</td>
+                            <td class="small-column">{{ $pokemon->name }}</td>
                             <td class="type1">{{ $pokemon->type1 }}</td>
                             <td class="type2">{{ $pokemon->type2 }}</td>
                             <td data-stat="total">{{ $pokemon->total }}</td>
@@ -51,8 +51,8 @@
                             <td data-stat="sp_atk">{{ $pokemon->sp_atk }}</td>
                             <td data-stat="sp_def">{{ $pokemon->sp_def }}</td>
                             <td data-stat="speed">{{ $pokemon->speed }}</td>
-                            <td class="weaknesses-column weaknesses">{{ implode(' ', json_decode($pokemon->weaknesses, true)) }}</td>
-                            <td class="resistances-column resistances">{{ implode(' ', json_decode($pokemon->resistances, true)) }}</td>
+                            <td class="weaknesses">{{ implode(' ', json_decode($pokemon->weaknesses, true)) }}</td>
+                            <td class="resistances">{{ implode(' ', json_decode($pokemon->resistances, true)) }}</td>
                             <td class="immunities">{{ implode(' ', json_decode($pokemon->immunities, true)) }}</td>
                         </tr>
                     @endforeach
