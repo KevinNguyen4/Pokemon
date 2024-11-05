@@ -3,7 +3,7 @@
 This is a Kevin Nguyen Pokemon Database
 
 Base stats for all pokemon  
-Abilities(base/hidden)  
+Abilities(base/hidden)
 Perhaps some queries/metrics(how many ghost type pokemon are there)  
 Common Moves for each pokemon  
 Common Held Items  
@@ -23,18 +23,18 @@ https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_National_Pok%C3%
 
 To Do List  
 -See how to match up pokemon from different sites  
+    -names might be a little weird
+    -primary keys for number/name
 -Scrape Pikalytics each format->Put in DB for the ones you find, but don't replace(some aren't in national dex for gen 9)   
     which also gets u the most recent data  
 -See how to update it instead of dropping and redoing it each time lol
--names might be a little weird
--primary keys for number/name
 -get pictures for each pokemon
 -filter for stats(needs a little work)(sorting by number makes it wacky)
--need to cancel out some weaknesses/immunities/resistances, no logic here yet
--check css/js for page, change the spacing
 -Search and Clear buttons font size are a little different?
 
 
+to scrape the table
+php artisan scrape:pokemon-table
 
 
 

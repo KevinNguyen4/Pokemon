@@ -67,15 +67,13 @@
     th {
         font-weight: bold;
         cursor: pointer;
-        background-color: #f8f8f8; /* Background color for the header */
-        position: sticky;
-        top: 0;
-        z-index: 1; /* Ensure the header is above other content */
     }
+
     th span {
         display: flex;
         align-items: center;
     }
+
     th span i {
         margin-left: 5px;
     }
