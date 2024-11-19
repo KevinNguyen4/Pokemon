@@ -3,6 +3,10 @@ namespace App\Services;
 
 use Goutte\Client;
 use Illuminate\Support\Facades\DB;
+use App\Models\Pokemon;
+use Illuminate\Support\Facades\Log;
+
+
 
 class ScrapingService
 {
@@ -42,11 +46,13 @@ class ScrapingService
             ];
 
             DB::table('pokemon')->insert($pokemon);
+            
         });
+
+        $this->scrapeAbilities();
     }
 
-    private function calculateWeaknessesResistancesImmunities($type1, $type2 = null)
-    {
+    private function calculateWeaknessesResistancesImmunities($type1, $type2 = null){
         $typeChart = [
             'Normal' => ['weaknesses' => ['Fighting'], 'resistances' => [], 'immunities' => ['Ghost']],
             'Fire' => ['weaknesses' => ['Water', 'Ground', 'Rock'], 'resistances' => ['Fire', 'Grass', 'Ice', 'Bug', 'Steel', 'Fairy'], 'immunities' => []],
@@ -138,4 +144,89 @@ class ScrapingService
             'immunities' => $immunities,
         ];
     }
+
+    private function scrapeAbilities()
+{
+    $url = 'https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_Ability';
+    $crawler = $this->client->request('GET', $url);
+
+    $crawler->filter('table.roundy tbody tr')->each(function ($node) {
+        try {
+            // Extract and clean the name
+            $name = $node->filter('td')->eq(2)->text();
+            $name = str_replace('*', '', $name); // Remove any asterisks
+            $name = preg_replace('/(?<=\w)(?=[A-Z])/', ' ', $name); // Insert space before uppercase letters following lowercase letters
+            $name = preg_replace('/\s+/', ' ', $name); // Replace multiple spaces with a single space
+            $name = trim($name); // Trim leading and trailing spaces
+
+            // Extract and clean abilities( DOES NOT REMOVE GEN RIGHT NOW YET)
+            $ability1 = preg_replace('/\s*GEN[IVXLCDM]+\+?$/i', '', $node->filter('td')->eq(3)->text());
+            $ability2 = preg_replace('/\s*GEN[IVXLCDM]+\+?$/i', '', $node->filter('td')->eq(4)->text());
+            $hiddenAbility = preg_replace('/\s*GEN[IVXLCDM]+\+?$/i', '', $node->filter('td')->eq(5)->text());
+
+            // Find the closest matching Pokémon in the database
+            $pokemon = $this->findClosestPokemon($name);
+
+            if ($pokemon) {
+                // Update the Pokémon with the scraped abilities
+                $pokemon->update([
+                    'ability1' => $ability1,
+                    'ability2' => $ability2,
+                    'hiddenAbility' => $hiddenAbility,
+                ]);
+            }
+        } catch (\InvalidArgumentException $e) {
+        }
+    });
+}
+
+private function findClosestPokemon($name)
+{
+    $pokemons = Pokemon::all();
+    $closest = null;
+    $shortest = -1;
+
+    foreach ($pokemons as $pokemon) {
+        $lev = levenshtein($name, $pokemon->name);
+
+        if ($lev == 0) {
+            $closest = $pokemon;
+            $shortest = 0;
+            break;
+        }
+
+        if ($lev <= $shortest || $shortest < 0) {
+            $closest = $pokemon;
+            $shortest = $lev;
+        }
+    }
+
+    return $closest;
+}
+
+/* 
+also need to still fix the "GenIV+" tags
+pokemon that have weird names/abilities so they don't work. Perhaps make a script for these guys
+Eevee Partner Eevee
+Cherrim
+Sawsbuck
+Pumpkaboo Average Size
+Pumpkaboo Small Size
+Pumpkaboo Large Size
+Pumpkaboo Super Size
+Gourgeist Average Size
+Gourgeist Small Size
+Gourgeist Large Size
+Gourgeist Super Size
+Rockruff Own Tempo Rockruff
+Eiscue Ice Face
+Basculegion Female
+Palafin Zero Form
+Dudunsparce Two-Segment Form
+Gimmighoul Chest Form
+Terapagos Normal Form
+*/
+
+
+
 }

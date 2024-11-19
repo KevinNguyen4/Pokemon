@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $pokemon->name }} Details</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
 </head>
 <body>
     <div class="container">
@@ -16,11 +17,23 @@
             </tr>
             <tr>
                 <th>Type 1</th>
-                <td>{{ $pokemon->type1 }}</td>
+                <td class="type1">{{ $pokemon->type1 }}</td>
             </tr>
             <tr>
                 <th>Type 2</th>
-                <td>{{ $pokemon->type2 }}</td>
+                <td class="type2">{{ $pokemon->type2 }}</td>
+            </tr>
+            <tr>
+                <th>Ability 1</th>
+                <td>{{ $pokemon->ability1 }}</td>
+            </tr>
+            <tr>
+                <th>Ability 2</th>
+                <td>{{ $pokemon->ability2 }}</td>
+            </tr>
+            <tr>
+                <th>Hidden Ability</th>
+                <td>{{ $pokemon->hiddenAbility }}</td>
             </tr>
             <tr>
                 <th>Total</th>
@@ -52,19 +65,20 @@
             </tr>
             <tr>
                 <th>Weaknesses</th>
-                <td>{{ implode(', ', json_decode($pokemon->weaknesses, true)) }}</td>
+                <td class="weaknesses">{{ implode(' ', json_decode($pokemon->weaknesses, true)) }}</td>
             </tr>
             <tr>
                 <th>Resistances</th>
-                <td>{{ implode(', ', json_decode($pokemon->resistances, true)) }}</td>
+                <td class="resistances">{{ implode(' ', json_decode($pokemon->resistances, true)) }}</td>
             </tr>
             <tr>
                 <th>Immunities</th>
-                <td>{{ implode(', ', json_decode($pokemon->immunities, true)) }}</td>
+                <td class="immunities">{{ implode(' ', json_decode($pokemon->immunities, true)) }}</td>
             </tr>
         </table>
         <br>
         <a href="{{ route('pokemon.search') }}" class="button">Back to List</a>
     </div>
+    <script src="{{ asset('js/custom.js') }}"></script>
 </body>
 </html>

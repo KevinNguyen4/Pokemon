@@ -9,6 +9,9 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
+
+     //a little outdated now, i have the SQL to create the table in the database already, but these are the ones i want to do
     public function up(): void
     {
         Schema::create('pokemon', function (Blueprint $table) {
@@ -29,15 +32,15 @@ return new class extends Migration
             //cue off of primary key(Number/Name) to match these
             $table->string('Ability1');
             $table->string('Ability2')->nullable();
-            $table->string('Hidden_Ability')->nullable();
+            $table->string('hiddenAbility')->nullable();
             $table->integer('Generation');
             $table->string('Classification')->nullable();
             $table->string('Held_Item')->nullable();
             $table->string('Common_Moves')->nullable();
             $table->string('EV_Spread')->nullable();
-            $table->json('weaknesses')->nullable();
-            $table->json('resistances')->nullable();
-            $table->json('immunities')->nullable();
+            $table->json('weaknesses')->nullable(); //done
+            $table->json('resistances')->nullable(); //done
+            $table->json('immunities')->nullable(); //done
         });
     }
 
