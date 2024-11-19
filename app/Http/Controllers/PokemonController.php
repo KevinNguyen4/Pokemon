@@ -6,6 +6,7 @@ use App\Models\Pokemon;
 
 class PokemonController extends Controller
 {
+    //search results for pokemon database page
     public function index(Request $request)
     {
         $query = $request->input('query');
@@ -26,4 +27,16 @@ class PokemonController extends Controller
 
         return view('welcome', compact('pokemons'));
     }
+
+    //for when you click on the pokemon name it will take you to a different site
+    public function show($name)
+    {
+        // Find the Pokémon by name
+        $pokemon = Pokemon::where('name', $name)->firstOrFail();
+
+        // Return the view with the Pokémon details
+        return view('pokemon.show', compact('pokemon'));
+    }
+
+
 }

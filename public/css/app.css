@@ -101,9 +101,11 @@
         flex: 1;
     }
 
-    .search-form button,
-    .search-form .button {
-        background-color: #003366; /* Dark blue background */
+    /* can be reused for other buttons as well */
+    /* .search-form button,
+    .search-form .button, */
+    .button {
+        background-color: #003366; 
         color: white;
         border: none;
         padding: 10px 20px;
@@ -111,9 +113,10 @@
         cursor: pointer;
         text-decoration: none; /* Remove underline for anchor tag */
     }
-
-    .search-form button:hover,
-    .search-form .button:hover {
+    
+    /* .search-form button:hover,
+    .search-form .button:hover, */
+    .button:hover {
         background-color: #002244; /* Darker blue on hover */
     }
 

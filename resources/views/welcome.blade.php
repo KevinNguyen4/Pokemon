@@ -14,7 +14,7 @@
         <h1>Pokémon Database</h1>
         <form method="GET" action="{{ route('pokemon.search') }}" class="search-form">
             <input type="text" name="query" placeholder="Search by name or number" value="{{ request('query') }}">
-            <button type="submit">Search</button>
+            <button class="button" type="submit">Search</button>
             <a href="{{ route('pokemon.search') }}" class="button">Clear</a>
         </form>
         <div class="table-container">
@@ -41,7 +41,7 @@
                     @foreach($pokemons as $pokemon)
                         <tr class="border-b">
                             <td class="smaller-column" data-stat="number">{{ ltrim($pokemon->number, '0') }}</td>
-                            <td class="small-column">{{ $pokemon->name }}</td>
+                            <td class="small-column"><a href="{{ route('pokemon.show', $pokemon->name) }}" style="color: inherit; text-decoration: none;">{{ $pokemon->name }}</a></td>
                             <td class="type1">{{ $pokemon->type1 }}</td>
                             <td class="type2">{{ $pokemon->type2 }}</td>
                             <td data-stat="total">{{ $pokemon->total }}</td>

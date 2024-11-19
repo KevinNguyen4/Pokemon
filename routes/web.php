@@ -14,8 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//main page
 Route::get('/', function () {
     return view('welcome');
 });
 
+//search results for pokemon database page
 Route::get('/', [PokemonController::class, 'index'])->name('pokemon.search');
+
+//show the Pokémon details when u click on each name
+Route::get('/pokemon/{name}', [PokemonController::class, 'show'])->name('pokemon.show');
+
+//add new ones here for new pages(quiz, about, etc)
