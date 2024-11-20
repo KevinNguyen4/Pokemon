@@ -49,7 +49,9 @@ class ScrapingService
             
         });
 
+        //this scrapes the abilities table and does the stragglers manually
         $this->scrapeAbilities();
+        $this->setManualAbilities();
     }
 
     private function calculateWeaknessesResistancesImmunities($type1, $type2 = null){
@@ -160,9 +162,19 @@ class ScrapingService
             $name = trim($name); // Trim leading and trailing spaces
 
             // Extract and clean abilities( DOES NOT REMOVE GEN RIGHT NOW YET)
-            $ability1 = preg_replace('/\s*GEN[IVXLCDM]+\+?$/i', '', $node->filter('td')->eq(3)->text());
-            $ability2 = preg_replace('/\s*GEN[IVXLCDM]+\+?$/i', '', $node->filter('td')->eq(4)->text());
-            $hiddenAbility = preg_replace('/\s*GEN[IVXLCDM]+\+?$/i', '', $node->filter('td')->eq(5)->text());
+            $ability1 = preg_replace('/\s*Gen\s*[IVXLCDM]+\+?$/i', '', $node->filter('td')->eq(3)->text());
+            $ability2 = preg_replace('/\s*Gen\s*[IVXLCDM]+\+?$/i', '', $node->filter('td')->eq(4)->text());
+            $hiddenAbility = preg_replace('/\s*Gen\s*[IVXLCDM]+\+?$/i', '', $node->filter('td')->eq(5)->text());
+
+            //for if i want the gen tags
+            // $ability1 = preg_replace('/(?<=\w)(?=Gen\s*[IVXLCDM]+\+?)/i', ' ', $node->filter('td')->eq(3)->text());
+            // $ability2 = preg_replace('/(?<=\w)(?=Gen\s*[IVXLCDM]+\+?)/i', ' ', $node->filter('td')->eq(4)->text());
+            // $hiddenAbility = preg_replace('/(?<=\w)(?=Gen\s*[IVXLCDM]+\+?)/i', ' ', $node->filter('td')->eq(5)->text());
+
+            // echo 'Scraped abilities for ' . $name . PHP_EOL;
+            // echo 'Ability 1: ' . $ability1 . PHP_EOL;
+            // echo 'Ability 2: ' . $ability2 . PHP_EOL;
+            // echo 'Hidden Ability: ' . $hiddenAbility . PHP_EOL;
 
             // Find the closest matching Pokémon in the database
             $pokemon = $this->findClosestPokemon($name);
@@ -180,53 +192,158 @@ class ScrapingService
     });
 }
 
+//helper function to find the closest pokemon, used in scrapeAbilities
+//(its for pokemon names that are not the exact same, but still want to match)
 private function findClosestPokemon($name)
 {
     $pokemons = Pokemon::all();
     $closest = null;
-    $shortest = -1;
+    $highestSimilarity = 0;
 
     foreach ($pokemons as $pokemon) {
-        $lev = levenshtein($name, $pokemon->name);
+        similar_text($name, $pokemon->name, $similarity);
 
-        if ($lev == 0) {
+        if ($similarity > $highestSimilarity) {
             $closest = $pokemon;
-            $shortest = 0;
-            break;
+            $highestSimilarity = $similarity;
         }
+    }
 
-        if ($lev <= $shortest || $shortest < 0) {
-            $closest = $pokemon;
-            $shortest = $lev;
-        }
+    // Additional check to ensure the closest match is reasonably similar
+    if ($highestSimilarity < 70) { // Adjust the threshold as needed
+        return null;
     }
 
     return $closest;
 }
 
-/* 
-also need to still fix the "GenIV+" tags
-pokemon that have weird names/abilities so they don't work. Perhaps make a script for these guys
-Eevee Partner Eevee
-Cherrim
-Sawsbuck
-Pumpkaboo Average Size
-Pumpkaboo Small Size
-Pumpkaboo Large Size
-Pumpkaboo Super Size
-Gourgeist Average Size
-Gourgeist Small Size
-Gourgeist Large Size
-Gourgeist Super Size
-Rockruff Own Tempo Rockruff
-Eiscue Ice Face
-Basculegion Female
-Palafin Zero Form
-Dudunsparce Two-Segment Form
-Gimmighoul Chest Form
-Terapagos Normal Form
-*/
+private function setManualAbilities()
+{
+    $manualAbilities = [
+        'Tauros Blaze Breed' => [
+            'ability1' => 'Intimidate',
+            'ability2' => 'Anger Point',
+            'hiddenAbility' => 'Cud Chew',
+        ],
+        'Tauros Aqua Breed' => [
+            'ability1' => 'Intimidate',
+            'ability2' => 'Anger Point',
+            'hiddenAbility' => 'Cud Chew',
+        ],
+        'Eevee Partner Eevee' => [
+            'ability1' => 'Run Away',
+            'ability2' => 'Adaptability',
+            'hiddenAbility' => 'Anticipation',
+        ],
+        'Cherrim' => [
+            'ability1' => 'Flower Gift',
+            'ability2' => null,
+            'hiddenAbility' => null,
+        ],
+        'Shellos' => [
+            'ability1' => 'Sticky Hold',
+            'ability2' => 'Storm Drain',
+            'hiddenAbility' => 'Sand Force',
+        ],
+        'Gastrodon' => [
+            'ability1' => 'Sticky Hold',
+            'ability2' => 'Storm Drain',
+            'hiddenAbility' => 'Sand Force',
+        ],
+        'Sawsbuck' => [
+            'ability1' => 'Chlorophyll',
+            'ability2' => 'Sap Sipper',
+            'hiddenAbility' => 'Serene Grace',
+        ],
+        'Pumpkaboo Average Size' => [
+            'ability1' => 'Pickup',
+            'ability2' => 'Frisk',
+            'hiddenAbility' => 'Insomnia',
+        ],
+        'Pumpkaboo Small Size' => [
+            'ability1' => 'Pickup',
+            'ability2' => 'Frisk',
+            'hiddenAbility' => 'Insomnia',
+        ],
+        'Pumpkaboo Large Size' => [
+            'ability1' => 'Pickup',
+            'ability2' => 'Frisk',
+            'hiddenAbility' => 'Insomnia',
+        ],
+        'Pumpkaboo Super Size' => [
+            'ability1' => 'Pickup',
+            'ability2' => 'Frisk',
+            'hiddenAbility' => 'Insomnia',
+        ],
+        'Gourgeist Average Size' => [
+            'ability1' => 'Pickup',
+            'ability2' => 'Frisk',
+            'hiddenAbility' => 'Insomnia',
+        ],
+        'Gourgeist Small Size' => [
+            'ability1' => 'Pickup',
+            'ability2' => 'Frisk',
+            'hiddenAbility' => 'Insomnia',
+        ],
+        'Gourgeist Large Size' => [
+            'ability1' => 'Pickup',
+            'ability2' => 'Frisk',
+            'hiddenAbility' => 'Insomnia',
+        ],
+        'Gourgeist Super Size' => [
+            'ability1' => 'Pickup',
+            'ability2' => 'Frisk',
+            'hiddenAbility' => 'Insomnia',
+        ],
+        'Rockruff Own Tempo Rockruff' => [
+            'ability1' => 'Own Tempo',
+            'ability2' => null,
+            'hiddenAbility' => null,
+        ],
+        'Eiscue Ice Face' => [
+            'ability1' => 'Ice Face',
+            'ability2' => null,
+            'hiddenAbility' => null,
+        ],
+        'Basculegion Female' => [
+            'ability1' => 'Swift Swim',
+            'ability2' => 'Adaptability',
+            'hiddenAbility' => 'Mold Breaker',
+        ],
+        'Palafin Zero Form' => [
+            'ability1' => 'Zero to Hero',
+            'ability2' => null,
+            'hiddenAbility' => null,
+        ],
+        'Dudunsparce Two-Segment Form' => [
+            'ability1' => 'Serene Grace',
+            'ability2' => 'Run Away',
+            'hiddenAbility' => 'Rattled',
+        ],
+        'Gimmighoul Chest Form' => [
+            'ability1' => 'Rattled',
+            'ability2' => null,
+            'hiddenAbility' => null,
+        ],
+        'Terapagos Normal Form' => [
+            'ability1' => 'Tera Shift',
+            'ability2' => null,
+            'hiddenAbility' => null,
+        ],
+    ];
 
+    foreach ($manualAbilities as $name => $abilities) {
+        $pokemon = Pokemon::where('name', $name)->first();
+
+        if ($pokemon) {
+            $pokemon->update([
+                'ability1' => $abilities['ability1'],
+                'ability2' => $abilities['ability2'],
+                'hiddenAbility' => $abilities['hiddenAbility'],
+            ]);
+        }
+    }
+}
 
 
 }
