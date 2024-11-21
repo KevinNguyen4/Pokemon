@@ -36,7 +36,7 @@ To Do List
 
 
 scrape the table again: php artisan scrape:pokemon-table
-start server: php artisan serve
+start server: go to \Documents\Pokemon\Pokemon then php artisan serve
 Drop table from mysql workbench, run create table query, then scrape again
 
 Other projects:
