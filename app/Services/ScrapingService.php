@@ -12,12 +12,11 @@ class ScrapingService
 {
     protected $client;
 
-    public function __construct(Client $client)
-    {
+    public function __construct(Client $client){
         $this->client = $client;
     }
 
-//MAIN SCRAPER FUNCTION, CALLS ALL OTHERS IN THIS FILE
+    //MAIN SCRAPER FUNCTION, CALLS ALL OTHERS IN THIS FILE
     public function scrapePokemonTable(){
         $crawler = $this->client->request('GET', 'https://pokemondb.net/pokedex/all');
 
@@ -52,9 +51,10 @@ class ScrapingService
         //this scrapes the abilities table and does the stragglers manually
         $this->scrapeAbilities();
         $this->setManualAbilities();
+        $this->scrapePokemonMoves();
     }
 
-//helper function to calculate the weaknesses, resistances, and immunities with logic and sorting
+    //helper function to calculate the weaknesses, resistances, and immunities with logic and sorting
     private function calculateWeaknessesResistancesImmunities($type1, $type2 = null){
         $typeChart = [
             'Normal' => ['weaknesses' => ['Fighting'], 'resistances' => [], 'immunities' => ['Ghost']],
@@ -89,13 +89,11 @@ class ScrapingService
                 $weaknesses = array_merge($weaknesses, $weaknesses2);
             }
             
-            
             $resistances = $typeChart[$type1]['resistances'];
             if($type2 != null){
                 $resistances2 = $typeChart[$type2]['resistances'];
                 $resistances = array_merge($resistances, $resistances2);
             }
-
 
             $immunities = $typeChart[$type1]['immunities'];
             if($type2 != null){
@@ -103,52 +101,14 @@ class ScrapingService
                 $immunities = array_merge($immunities, $immunities2);
             }
 
-            //remove dupes
-            $weaknesses = array_unique($weaknesses);
-            $resistances = array_unique($resistances);
-            $immunities = array_unique($immunities);
-
-
-            //so now they have all the data, now we have to cancel them out
-            
-            // If there is a type in both weaknesses and resistances, remove it from both
-            $commonWeakResist = array_intersect($weaknesses, $resistances);
-            $weaknesses = array_diff($weaknesses, $commonWeakResist);
-            $resistances = array_diff($resistances, $commonWeakResist);
-
-            // If there is a type in immunities, remove it from both weaknesses and resistances
-            $weaknesses = array_diff($weaknesses, $immunities);
-            $resistances = array_diff($resistances, $immunities);
-
-
-            //now we order the 3 lists based on type ordering
-            $order = [
-                'Normal', 'Fire', 'Water', 'Electric', 'Grass', 'Ice', 'Fighting', 'Poison', 'Ground', 'Flying', 
-                'Psychic', 'Bug', 'Rock', 'Ghost', 'Dragon', 'Dark', 'Steel', 'Fairy'
-            ];
-            
-            // Custom sorting function
-            $sortFunction = function($a, $b) use ($order) {
-                $posA = array_search($a, $order);
-                $posB = array_search($b, $order);
-                return $posA - $posB;
-            };
-            
-            // Sort the arrays based on the custom order
-            usort($weaknesses, $sortFunction);
-            usort($resistances, $sortFunction);
-            usort($immunities, $sortFunction);
+            //if the pokemon has an ability that changes its type matchups
+             return $this->typeLogic($weaknesses, $resistances, $immunities);
             
         }
 
-        return [
-            'weaknesses' => $weaknesses,
-            'resistances' => $resistances,
-            'immunities' => $immunities,
-        ];
     }
 
-//scrapes the abilities table
+    //scrapes the abilities table
     private function scrapeAbilities(){
         $url = 'https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_Ability';
         $crawler = $this->client->request('GET', $url);
@@ -167,16 +127,6 @@ class ScrapingService
                 $ability2 = preg_replace('/\s*Gen\s*[IVXLCDM]+\+?$/i', '', $node->filter('td')->eq(4)->text());
                 $hiddenAbility = preg_replace('/\s*Gen\s*[IVXLCDM]+\+?$/i', '', $node->filter('td')->eq(5)->text());
 
-                //for if i want the gen tags
-                // $ability1 = preg_replace('/(?<=\w)(?=Gen\s*[IVXLCDM]+\+?)/i', ' ', $node->filter('td')->eq(3)->text());
-                // $ability2 = preg_replace('/(?<=\w)(?=Gen\s*[IVXLCDM]+\+?)/i', ' ', $node->filter('td')->eq(4)->text());
-                // $hiddenAbility = preg_replace('/(?<=\w)(?=Gen\s*[IVXLCDM]+\+?)/i', ' ', $node->filter('td')->eq(5)->text());
-
-                // echo 'Scraped abilities for ' . $name . PHP_EOL;
-                // echo 'Ability 1: ' . $ability1 . PHP_EOL;
-                // echo 'Ability 2: ' . $ability2 . PHP_EOL;
-                // echo 'Hidden Ability: ' . $hiddenAbility . PHP_EOL;
-
                 // Find the closest matching Pokémon in the database
                 $pokemon = $this->findClosestPokemon($name);
 
@@ -187,14 +137,56 @@ class ScrapingService
                         'ability2' => $ability2,
                         'hiddenAbility' => $hiddenAbility,
                     ]);
+
+                    // Update ability-based weaknesses/immunities 
+                    if (in_array($pokemon->ability1, ['Volt Absorb', 'Water Absorb', 'Levitate', 'Lightning Rod', 'Thick Fat']) 
+                        && $pokemon->ability2 == null && $pokemon->hiddenAbility == null) {
+
+                        // Decode existing resistances and immunities from JSON
+                        $resistances = json_decode($pokemon->resistances, true) ?? [];
+                        $immunities = json_decode($pokemon->immunities, true) ?? [];
+
+                        //only doing these ones because these are the ones that some pokemon only have that ability, so they will be immune/resist
+                        //if a pokemon has another option, this will not apply to them
+                        switch ($pokemon->ability1) {
+                            case 'Volt Absorb':
+                                $immunities = array_merge($immunities, ['Electric']);
+                                break;
+                            case 'Water Absorb':
+                                $immunities = array_merge($immunities, ['Water']);
+                                break;
+                            case 'Levitate':
+                                $immunities = array_merge($immunities, ['Ground']);
+                                break;
+                            case 'Lightning Rod':
+                                $immunities = array_merge($immunities, ['Electric']);
+                                break;
+                            case 'Thick Fat':
+                                $resistances = array_merge($resistances, ['Fire', 'Ice']);
+                                break;
+                        }
+
+                        // Calculate and update type logic
+                        $typeLogicResults = $this->typeLogic(
+                            json_decode($pokemon->weaknesses, true),
+                            $resistances,
+                            $immunities
+                        );
+                        $pokemon->update([
+                            'weaknesses' => json_encode($typeLogicResults['weaknesses']),
+                            'resistances' => json_encode($typeLogicResults['resistances']),
+                            'immunities' => json_encode($typeLogicResults['immunities']),
+                        ]);
+                    }
+
                 }
             } catch (\InvalidArgumentException $e) {
             }
         });
     }
 
-//helper function to find the closest pokemon, used in scrapeAbilities
-//(its for pokemon names that are not the exact same, but still want to match)
+    //helper function to find the closest pokemon, used in scrapeAbilities
+    //(its for pokemon names that are not the exact same, but still want to match)
     private function findClosestPokemon($name){
         $pokemons = Pokemon::all();
         $closest = null;
@@ -217,7 +209,7 @@ class ScrapingService
         return $closest;
     }
 
-//for the specific pokemon that have weird names and the scraper was acting weird
+    //for the specific pokemon that have weird names and the scraper was acting weird
     private function setManualAbilities(){
         $manualAbilities = [
             'Tauros Blaze Breed' => [
@@ -345,31 +337,142 @@ class ScrapingService
         }
     }
 
-/*
-//ABILITY BASED WEAKNESS/RESISTANCE/IMMUNITY
+    //new function to calculate the weaknesses, resistances, and immunities with logic and sorting
+    private function typeLogic($weaknesses, $resistances, $immunities){
 
-add this to the calculateweaknessesresistancesimmunities function
+        //remove dupes
+        $weaknesses = array_unique($weaknesses);
+        $resistances = array_unique($resistances);
+        $immunities = array_unique($immunities);
+        
+        // If there is a type in both weaknesses and resistances, remove it from both
+        $commonWeakResist = array_intersect($weaknesses, $resistances);
+        $weaknesses = array_diff($weaknesses, $commonWeakResist);
+        $resistances = array_diff($resistances, $commonWeakResist);
 
-immunities:
-Dry Skin
-Earth Eater
-Flash Fire
-Levitate
-Lightning Rod
-Sap Sipper
-Storm Drain
-Volt Absorb
-Water Absorb
-well baked body
+        // If there is a type in immunities, remove it from both weaknesses and resistances
+        $weaknesses = array_diff($weaknesses, $immunities);
+        $resistances = array_diff($resistances, $immunities);
 
-resistances and weaknesses:
-fluffy
-heatproof
-purifying salt
-thick fat
-water bubble
-*/
+        //now we order the 3 lists based on type ordering
+        $order = [
+            'Normal', 'Fire', 'Water', 'Electric', 'Grass', 'Ice', 'Fighting', 'Poison', 'Ground', 'Flying', 
+            'Psychic', 'Bug', 'Rock', 'Ghost', 'Dragon', 'Dark', 'Steel', 'Fairy'
+        ];
+        
+        // Custom sorting function
+        $sortFunction = function($a, $b) use ($order) {
+            $posA = array_search($a, $order);
+            $posB = array_search($b, $order);
+            return $posA - $posB;
+        };
+        
+        // Sort the arrays based on the custom order
+        usort($weaknesses, $sortFunction);
+        usort($resistances, $sortFunction);
+        usort($immunities, $sortFunction);
+
+        return [
+            'weaknesses' => $weaknesses,
+            'resistances' => $resistances,
+            'immunities' => $immunities,
+        ];
+
+    }
+
+    //scrape pokemon moves, items, popular ability from pikalytics and insert
+    //things like rotom-wash and lilligant-hisui dont work cuz the names dont match up(and ditto is funky)
+    public function scrapePokemonMoves()
+    {
+
+        //CHANGE THIS TO WHATEVER FORMAT YOU WANT
+        $baseUrl = 'https://pikalytics.com/pokedex/gen9vgc2024regh/';
+
+        
+        // Fetch all Pokémon names from the database
+        $pokemonNames = Pokemon::pluck('name')->toArray();
+
+        //might not do it perfectly for pokemon with forms
+        foreach ($pokemonNames as $name) {
+            $formattedName = strtolower(str_replace(' ', '-', $name));
+            $url = $baseUrl . $formattedName;
+            $this->scrapePokemonDataFromPage($url);
+        }
+    }
+
+    private function scrapePokemonDataFromPage($url)
+    {
+        $crawler = $this->client->request('GET', $url);
+
+        // Check if the page exists
+        $statusCode = $this->client->getResponse()->getStatusCode();
+        if ($statusCode == 404) {
+            return;
+        }
+
+        // Extract the Pokémon name from the end of the URL
+        $urlParts = explode('/', parse_url($url, PHP_URL_PATH));
+        $name = end($urlParts);
+
+        //new abilities
+        $ability = null; 
+        $crawler->filter('#abilities_wrapper .pokedex-move-entry-new')->each(function ($abilityNode) use (&$ability) {
+            if ($ability === null) {
+                $abilityTextNode = $abilityNode->filter('div[style="margin-left:10px;display:inline-block;"]');
+                if ($abilityTextNode->count() > 0) {
+                    $ability = $abilityTextNode->text();
+                }
+            }
+        });
+
+        // Extract the two most common items
+        $items = [];
+        $crawler->filter('#items_wrapper .pokedex-move-entry-new')->each(function ($itemNode) use (&$items) {
+            if (count($items) < 2) {
+                $itemTextNode = $itemNode->filter('div[style="display:inline-block;"]');
+                if ($itemTextNode->count() > 0) {
+                    $itemName = $itemTextNode->text();
+                    if (strtolower($itemName) !== 'other') { // Filter out "Other"
+                        $items[] = $itemName;
+                    }
+                }
+            }
+        });
+
+        if (count($items) == 0) {
+            $items = null;
+        } elseif (count($items) == 1) {
+            $items = [$items[0]];
+        }
 
 
+        // Extract the five most common moves
+        $moves = [];
+        $crawler->filter('.pokedex-move-entry-new')->each(function ($moveNode) use (&$moves) {
+            if (count($moves) < 5) {
+                $moveTextNode = $moveNode->filter('div')->eq(1);
+                if ($moveTextNode->count() > 0) {
+                    $moves[] = $moveTextNode->text();
+                }
+            }
+        });
 
+        // Find the corresponding Pokémon in the database
+        $pokemon = $this->findClosestPokemon($name);
+
+        if ($pokemon) {
+            $pokemon->update([
+                'popular_ability' => $ability,
+                'items' => json_encode($items),
+                'moves' => json_encode($moves),
+            ]);
+            
+        }
+
+    }
 }
+
+
+
+
+

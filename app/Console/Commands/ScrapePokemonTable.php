@@ -6,6 +6,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Services\ScrapingService;
 
+
+//php artisan scrape:pokemon-table
 class ScrapePokemonTable extends Command
 {
     protected $signature = 'scrape:pokemon-table';

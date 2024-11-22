@@ -33,11 +33,12 @@ return new class extends Migration
             $table->string('Ability1');
             $table->string('Ability2')->nullable();
             $table->string('hiddenAbility')->nullable();
-            $table->integer('Generation');
-            $table->string('Classification')->nullable();
-            $table->string('Held_Item')->nullable();
-            $table->string('Common_Moves')->nullable();
-            $table->string('EV_Spread')->nullable();
+            //$table->integer('Generation');
+            //$table->string('Classification')->nullable();
+            $table->string('popular_ability')->nullable();
+            $table->string('items')->nullable();
+            $table->string('moves')->nullable();
+            //$table->string('EV_Spread')->nullable();
             $table->json('weaknesses')->nullable(); //done
             $table->json('resistances')->nullable(); //done
             $table->json('immunities')->nullable(); //done

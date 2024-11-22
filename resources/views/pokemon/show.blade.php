@@ -75,6 +75,18 @@
                 <th>Immunities</th>
                 <td class="immunities">{{ implode(' ', json_decode($pokemon->immunities, true)) }}</td>
             </tr>
+            <tr>
+                <th>Common Moves</th>
+                <td>{{ implode(', ', json_decode($pokemon->moves, true)) }}</td>
+            </tr>
+            <tr>
+                <th>Common Items</th>
+                <td>{{ implode(', ', json_decode($pokemon->items, true)) }}</td>
+            </tr>
+            <tr>
+                <th>Common Ability</th>
+                <td>{{ $pokemon->popular_ability }}</td>
+            </tr>
         </table>
         <br>
         <a href="{{ route('pokemon.search') }}" class="button">Back to List</a>
