@@ -12,6 +12,6 @@ class Pokemon extends Model
     protected $fillable = [
         'number', 'name', 'type1', 'type2', 'total', 'hp', 'attack', 'defense', 'sp_atk', 'sp_def', 'speed', 
         'weaknesses', 'resistances', 'immunities', 'ability1', 'ability2', 'hiddenAbility', 
-        'generation', 'classification', 'held_item', 'common_moves', 'ev_spread'
+        'items', 'moves', 'popular_ability'
     ];
 }

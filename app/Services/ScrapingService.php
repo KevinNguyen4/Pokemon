@@ -49,8 +49,8 @@ class ScrapingService
         });
 
         //this scrapes the abilities table and does the stragglers manually
-        //$this->scrapeAbilities();
-        //$this->setManualAbilities();
+        $this->scrapeAbilities();
+        $this->setManualAbilities();
         $this->scrapePokemonMoves();
     }
 
@@ -380,20 +380,23 @@ class ScrapingService
 
     }
 
-    //put something to see if usage is above 0.03% then scrape it, once it gets below then stop
+    //scrape pokemon moves, items, popular ability from pikalytics and insert
+    //things like rotom-wash and lilligant-hisui dont work cuz the names dont match up(and ditto is funky)
     public function scrapePokemonMoves()
     {
-        $baseUrl = 'https://pikalytics.com';
-        $crawler = $this->client->request('GET', $baseUrl . '/pokedex/gen9vgc2024regh');
 
-        // Extract the URLs for each Pokémon
-        $pokemonUrls = [];
-        $crawler->filter('.ss_entry.pokedex_entry')->each(function ($node) use (&$pokemonUrls) {
-            $pokemonUrls[] = $node->attr('href');
-        });
+        //CHANGE THIS TO WHATEVER FORMAT YOU WANT
+        $baseUrl = 'https://pikalytics.com/pokedex/gen9vgc2024regh/';
 
-        foreach ($pokemonUrls as $url) {
-            $this->scrapePokemonDataFromPage($baseUrl . $url);
+        
+        // Fetch all Pokémon names from the database
+        $pokemonNames = Pokemon::pluck('name')->toArray();
+
+        //might not do it perfectly for pokemon with forms
+        foreach ($pokemonNames as $name) {
+            $formattedName = strtolower(str_replace(' ', '-', $name));
+            $url = $baseUrl . $formattedName;
+            $this->scrapePokemonDataFromPage($url);
         }
     }
 
@@ -401,19 +404,15 @@ class ScrapingService
     {
         $crawler = $this->client->request('GET', $url);
 
+        // Check if the page exists
+        $statusCode = $this->client->getResponse()->getStatusCode();
+        if ($statusCode == 404) {
+            return;
+        }
+
         // Extract the Pokémon name from the end of the URL
         $urlParts = explode('/', parse_url($url, PHP_URL_PATH));
         $name = end($urlParts);
-        echo 'Name: ' . $name . PHP_EOL;
-
-        // // Extract the most common ability
-        // $abilityNode = $crawler->filter('#abilities_wrapper .pokedex-move-entry-new')->eq(0)->filter('div')->eq(0);
-        // if ($abilityNode->count() > 0) {
-        //     $ability = $abilityNode->text();
-        // } else {
-        //     echo 'Ability not found for ' . $name . PHP_EOL;
-        //     $ability = null;
-        // }
 
         //new abilities
         $ability = null; 
@@ -458,33 +457,22 @@ class ScrapingService
             }
         });
 
-        // // Find the corresponding Pokémon in the database
-        // $pokemon = Pokemon::where('name', $name)->first();
+        // Find the corresponding Pokémon in the database
+        $pokemon = $this->findClosestPokemon($name);
 
-        // if ($pokemon) {
-        //     // Update the Pokémon with the scraped data
-        //     $pokemon->update([
-        //         'ability' => $ability,
-        //         'items' => json_encode($items),
-        //         'moves' => json_encode($moves),
-        //     ]);
-        // } else {
-        //     // If the Pokémon does not exist, insert a new record
-        //     DB::table('pokemon')->insert([
-        //         'name' => $name,
-        //         'ability' => $ability,
-        //         'items' => json_encode($items),
-        //         'moves' => json_encode($moves),
-        //     ]);
-        // }
+        if ($pokemon) {
+            $pokemon->update([
+                'popular_ability' => $ability,
+                'items' => json_encode($items),
+                'moves' => json_encode($moves),
+            ]);
+            
+        }
 
-        // echo 'Scraped data for ' . $name . PHP_EOL;
-        echo 'Ability: ' . $ability . PHP_EOL;
-        echo 'Items: ' . implode(', ', $items) . PHP_EOL;
-        echo 'Moves: ' . implode(', ', $moves) . PHP_EOL;
-        echo PHP_EOL;
     }
 }
+
+
 
 
 
