@@ -77,11 +77,23 @@
             </tr>
             <tr>
                 <th>Common Moves</th>
-                <td>{{ implode(', ', json_decode($pokemon->moves, true)) }}</td>
+                    <td>
+                        @if (!empty($pokemon->moves))
+                            {{ implode(', ', json_decode($pokemon->moves, true)) }}
+                        @else
+                            <!-- Return blank if moves are empty -->
+                        @endif
+                    </td>
             </tr>
             <tr>
                 <th>Common Items</th>
-                <td>{{ implode(', ', json_decode($pokemon->items, true)) }}</td>
+                <td>
+                    @if (!empty($pokemon->items))
+                        {{ implode(', ', json_decode($pokemon->items, true)) }}
+                    @else
+                        <!-- Return blank if items are empty -->
+                    @endif
+                </td>
             </tr>
             <tr>
                 <th>Common Ability</th>
