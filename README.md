@@ -17,7 +17,7 @@ To Do List
 2-Scrape Pikalytics for moves/items each format->Put in DB for the ones you find, but don't replace(some aren't in national dex for gen 9)   
     which also gets u the most recent data  
 3-See how to update it instead of dropping and redoing it each time lol
-4-add logic for resistances/immunities/weaknesses based on ability
+
 5-filter for stats(needs a little work)(sorting by number makes it wacky)
 6-Search and Clear buttons font size are a little different?
 7-filters for typing, stats? weaknesses/resistances, to search up by(like an advanced search)
@@ -25,7 +25,7 @@ To Do List
     (guess how many ghost types there are, how many pokemon with higher than 600 Base stats, or whatever)
 9-get pictures for each pokemon on their personal links
 10-graph/plot to visualize stats on pokemons personal page(with colors)
-
+11-think about lazy loading for my page?
 
 
 

@@ -49,8 +49,9 @@ class ScrapingService
         });
 
         //this scrapes the abilities table and does the stragglers manually
-        $this->scrapeAbilities();
-        $this->setManualAbilities();
+        //$this->scrapeAbilities();
+        //$this->setManualAbilities();
+        $this->scrapePokemonMoves();
     }
 
     //helper function to calculate the weaknesses, resistances, and immunities with logic and sorting
@@ -379,7 +380,111 @@ class ScrapingService
 
     }
 
+    //put something to see if usage is above 0.03% then scrape it, once it gets below then stop
+    public function scrapePokemonMoves()
+    {
+        $baseUrl = 'https://pikalytics.com';
+        $crawler = $this->client->request('GET', $baseUrl . '/pokedex/gen9vgc2024regh');
+
+        // Extract the URLs for each Pokémon
+        $pokemonUrls = [];
+        $crawler->filter('.ss_entry.pokedex_entry')->each(function ($node) use (&$pokemonUrls) {
+            $pokemonUrls[] = $node->attr('href');
+        });
+
+        foreach ($pokemonUrls as $url) {
+            $this->scrapePokemonDataFromPage($baseUrl . $url);
+        }
+    }
+
+    private function scrapePokemonDataFromPage($url)
+    {
+        $crawler = $this->client->request('GET', $url);
+
+        // Extract the Pokémon name from the end of the URL
+        $urlParts = explode('/', parse_url($url, PHP_URL_PATH));
+        $name = end($urlParts);
+        echo 'Name: ' . $name . PHP_EOL;
+
+        // // Extract the most common ability
+        // $abilityNode = $crawler->filter('#abilities_wrapper .pokedex-move-entry-new')->eq(0)->filter('div')->eq(0);
+        // if ($abilityNode->count() > 0) {
+        //     $ability = $abilityNode->text();
+        // } else {
+        //     echo 'Ability not found for ' . $name . PHP_EOL;
+        //     $ability = null;
+        // }
+
+        //new abilities
+        $ability = null; 
+        $crawler->filter('#abilities_wrapper .pokedex-move-entry-new')->each(function ($abilityNode) use (&$ability) {
+            if ($ability === null) {
+                $abilityTextNode = $abilityNode->filter('div[style="margin-left:10px;display:inline-block;"]');
+                if ($abilityTextNode->count() > 0) {
+                    $ability = $abilityTextNode->text();
+                }
+            }
+        });
+
+        // Extract the two most common items
+        $items = [];
+        $crawler->filter('#items_wrapper .pokedex-move-entry-new')->each(function ($itemNode) use (&$items) {
+            if (count($items) < 2) {
+                $itemTextNode = $itemNode->filter('div[style="display:inline-block;"]');
+                if ($itemTextNode->count() > 0) {
+                    $itemName = $itemTextNode->text();
+                    if (strtolower($itemName) !== 'other') { // Filter out "Other"
+                        $items[] = $itemName;
+                    }
+                }
+            }
+        });
+
+        if (count($items) == 0) {
+            $items = null;
+        } elseif (count($items) == 1) {
+            $items = [$items[0]];
+        }
 
 
+        // Extract the five most common moves
+        $moves = [];
+        $crawler->filter('.pokedex-move-entry-new')->each(function ($moveNode) use (&$moves) {
+            if (count($moves) < 5) {
+                $moveTextNode = $moveNode->filter('div')->eq(1);
+                if ($moveTextNode->count() > 0) {
+                    $moves[] = $moveTextNode->text();
+                }
+            }
+        });
 
+        // // Find the corresponding Pokémon in the database
+        // $pokemon = Pokemon::where('name', $name)->first();
+
+        // if ($pokemon) {
+        //     // Update the Pokémon with the scraped data
+        //     $pokemon->update([
+        //         'ability' => $ability,
+        //         'items' => json_encode($items),
+        //         'moves' => json_encode($moves),
+        //     ]);
+        // } else {
+        //     // If the Pokémon does not exist, insert a new record
+        //     DB::table('pokemon')->insert([
+        //         'name' => $name,
+        //         'ability' => $ability,
+        //         'items' => json_encode($items),
+        //         'moves' => json_encode($moves),
+        //     ]);
+        // }
+
+        // echo 'Scraped data for ' . $name . PHP_EOL;
+        echo 'Ability: ' . $ability . PHP_EOL;
+        echo 'Items: ' . implode(', ', $items) . PHP_EOL;
+        echo 'Moves: ' . implode(', ', $moves) . PHP_EOL;
+        echo PHP_EOL;
+    }
 }
+
+
+
