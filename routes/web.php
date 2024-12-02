@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PokemonController;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,8 @@ Route::get('/', [PokemonController::class, 'index'])->name('pokemon.search');
 Route::get('/pokemon/{name}', [PokemonController::class, 'show'])->name('pokemon.show');
 
 //add new ones here for new pages(quiz, about, etc)
+Route::get('/pokemonQuiz', [PokemonController::class, 'quiz'])->name('quiz');
+
+//about me
+Route::get('/about', [PokemonController::class, 'about'])->name('aboutme');
+

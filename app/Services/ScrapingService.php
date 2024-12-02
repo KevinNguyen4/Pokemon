@@ -385,6 +385,7 @@ class ScrapingService
     public function scrapePokemonMoves(){
 
         //CHANGE THIS TO WHATEVER FORMAT YOU WANT
+        //can also change this, then use update/something like that if i want to compile lots of different VGC formats
         $baseUrl = 'https://pikalytics.com/pokedex/gen9vgc2024regh/';
 
         
