@@ -14,34 +14,12 @@
         <h1>Pokémon Database</h1>
         <form method="GET" action="{{ route('pokemon.search') }}" class="search-form">
             <input type="text" name="query" placeholder="Search by name or number" value="{{ request('query') }}">
+            <input type="text" name="type" placeholder="Search by type" value="{{ request('type') }}">
+            <input type="text" name="ability" placeholder="Search by ability" value="{{ request('ability') }}">
             <button class="button" type="submit">Search</button>
-            <a href="{{ route('pokemon.search') }}" class="button">Clear</a>
+            <button href="{{ route('pokemon.search') }}" class="button">Clear</button>
         </form>
-
-<!-- 
-MAKE AN ADVANCED SEARCH OPTION HERE drop down clickable?
-search filters by type and ability?
-
-for type-> just like name, but for type instead!
-for ability-> just a search up(like how i do name search up because ability is a property)
-
--->
-
-<!-- ADD THIS TO THE QUERY FOR NAME/NUMBER, BUT JUST SET THEM TO ALL BY DEFAULT-->
-
-<form method="GET" action="{{ route('pokemon.search') }}" class="search-form">
-    <input type="text" name="query" placeholder="TYPE" value="{{ request('query') }}">
-    <button class="button" type="submit">Search</button>
-    <a href="{{ route('pokemon.search') }}" class="button">Clear</a>
-</form>
-
-<form method="GET" action="{{ route('pokemon.search') }}" class="search-form">
-    <input type="text" name="query" placeholder="Ability" value="{{ request('query') }}">
-    <button class="button" type="submit">Search</button>
-    <a href="{{ route('pokemon.search') }}" class="button">Clear</a>
-</form>
-
-
+        
 
         <div class="table-container">
             <table>

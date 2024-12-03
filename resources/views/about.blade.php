@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,17 +13,53 @@
     <div class="container">
         <h1>About Me</h1>
         <div class="table-container">
-            
-            this might be better for the other project, but we can also do it here lol<br>
-            1. do a button that sends me an email(put a 1 day timer on it tho)<br>
-            2. put a censored version of my resume on it?<br>
-            3. cover letter type of thing, explaining what i've done and what i have experience with. Just kinda elaborate on my resume<br>
-            4. talk about this project and why i did it, how i did it, what it shows i know?<br>
-            5. talk about other projects(event tracking, react/springboot project, google extension, game)<br>
-            6. Contact me<br>
-            7. pic of me maybe<br>
-            
+            <p>Hi, I'm Kevin Nguyen. Welcome to my personal page!</p>
 
+            <!-- 1. Button to send an email with a 1-day timer -->
+            <form method="POST" action="{{ route('send.email') }}">
+                @csrf
+                <button type="submit" class="button">Send me an email</button>
+            </form>
+
+            <!-- 2. Censored version of my resume -->
+            <h2>My Resume</h2>
+            <a href="{{ asset('resume_censored.pdf') }}" target="_blank">View my censored resume</a>
+
+            <!-- 3. Cover letter -->
+            <h2>Cover Letter</h2>
+            <p>
+                I have experience in various fields including web development, software engineering, and project management. 
+                I have worked on numerous projects that demonstrate my skills and expertise. 
+                My resume provides a detailed overview of my professional journey.
+            </p>
+
+            <!-- 4. Talk about this project -->
+            <h2>About This Project</h2>
+            <p>
+                This project is a Pokémon database that I created to showcase my skills in web development. 
+                It includes features such as searching for Pokémon by name, type, and ability, as well as various quizzes to test your Pokémon knowledge. 
+                This project demonstrates my ability to work with databases, create dynamic web applications, and implement user-friendly interfaces.
+            </p>
+
+            <!-- 5. Talk about other projects -->
+            <h2>Other Projects</h2>
+            <p>
+                I have worked on several other projects including:
+                <ul>
+                    <li>Event Tracking System</li>
+                    <li>React/Spring Boot Application</li>
+                    <li>Google Chrome Extension</li>
+                    <li>Game Development</li>
+                </ul>
+            </p>
+
+            <!-- 6. Contact me -->
+            <h2>Contact Me</h2>
+            <p>If you would like to get in touch, please send me an email at <a href="mailto:kdn2000job@gmail.com">kdn2000job@gmail.com</a>.</p>
+
+            <!-- 7. Picture of me -->
+            <h2>Picture of Me</h2>
+            <img src="{{ asset('images/me.jpg') }}" alt="Kevin Nguyen" style="width:200px;height:auto;">
         </div>
     </div>
     {{-- <script src="{{ asset('js/custom.js') }}"></script> --}}

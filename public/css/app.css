@@ -101,6 +101,24 @@
         flex: 1;
     }
 
+    .search-form input[type="text"] {
+        border: 2px solid #2E6F40;
+        border-radius: 10px;
+        padding: 5px;
+        margin-right: 10px;
+    }
+    .search-form button {
+        border-radius: 10px;
+        background-color: #2E6F40;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+    }
+    .search-form button:hover {
+        background-color: #24532D;
+    }
+
     /* can be reused for other buttons as well */
     /* .search-form button,
     .search-form .button, */

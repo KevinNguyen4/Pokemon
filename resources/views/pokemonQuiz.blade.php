@@ -24,13 +24,14 @@ Make a score/quiz with progress and fun little things throughout the way
     <div class="container">
         <h1>Pokémon Quiz</h1>
         <div class="table-container">
-            pick a quiz<br>
-            1. name a pokemon that has this base stat total<br>
-            2. name a pokemon that has this ability<br>
-            3. name a pokemon that has this typing(fire rock)<br>
-            4. higher or lower stats<br>
-            5. name as many pokemon that start with a certain letter,type, or are weak to(it can be a streak thing like go until fail)<br>
-            6. gives clues to the pokemon and you have to guess like its weak to rock, electric, its 2nd type is flying/is monotype<br>
+            <p>Pick a quiz:</p>
+            <ul><br><br>
+                <li><a href="{{ route('pokemon.baseStatTotal') }}" class="button">Name a Pokémon that has this base stat total</a></li><br><br>
+                <li><a href="{{ route('pokemon.ability') }}" class="button">Name a Pokémon that has this ability</a></li><br><br>
+                <li><a href="{{ route('pokemon.typing') }}" class="button">Name a Pokémon that has this typing (e.g., Fire/Rock)</a></li><br><br>
+                <li><a href="{{ route('pokemon.higherLower') }}" class="button">Higher or Lower Stats</a></li><br><br>
+                <li><a href="{{ route('pokemon.namePokemon') }}" class="button">Name as many Pokémon that</a></li><br><br>
+                <li><a href="{{ route('pokemon.clues') }}" class="button">Guess the Pokémon based on clues</a></li><br><br>
 
         </div>
     </div>

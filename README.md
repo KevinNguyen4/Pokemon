@@ -26,8 +26,7 @@ Backend
 Database Page
 
     5-filter for stats(needs a little work)(sorting by number makes it wacky)
-    6-Search and Clear buttons font size are a little different?
-    7-filters for typing, stats? weaknesses/resistances, to search up by(like an advanced search)
+    6-Search and Clear buttons font size are a little different 
     11-think about lazy loading for my page?
     17-make heading for database(atk, def) sticky so u can see when scrolling down
 
@@ -45,7 +44,8 @@ Quiz Page
 About Page
 
     19-i guess just all the things that i've listed on the page 
-
+    2-put a censored resume in public directory named resume_censored.pdf
+    3-put a pic of me in public/images named images/me.jpg
 
 
 
@@ -60,5 +60,5 @@ To change what VGC format from pikalytics to get, go to scrapePokemonMoves() and
 Other projects:
 League of legends extension?
 Google chrome extension
-card game, turn based game with health, attack, some effects, items, kinda like hearthston
+card game, turn based game with health, attack, some effects, items, kinda like hearthstone
 
