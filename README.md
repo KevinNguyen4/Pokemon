@@ -2,7 +2,7 @@
 
 This is a Kevin Nguyen Pokemon Database
 
-Sources:
+Sources(data scraped from these sites):
 https://pokemondb.net/pokedex/all  
 https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_Ability  
 https://www.pikalytics.com/pokedex/gen9vgc2024regh  
@@ -60,4 +60,3 @@ Other projects:
 League of legends extension?
 Google chrome extension
 card game, turn based game with health, attack, some effects, items, kinda like hearthstone
-

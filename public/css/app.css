@@ -136,3 +136,11 @@
         background-color: #002244; /* Darker blue on hover */
     }
 
+
+/* ABOUT ME PAGE*/
+    /* for the bullet points on projects */
+    ul {
+        list-style-type: disc;
+        margin-left: 20px;
+    }
+
