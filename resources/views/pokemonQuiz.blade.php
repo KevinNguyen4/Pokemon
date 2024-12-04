@@ -21,6 +21,7 @@ Make a score/quiz with progress and fun little things throughout the way
 </head>
 
 <body>
+    @include('layouts.header')
     <div class="container">
         <h1>Pokémon Quiz</h1>
         <div class="table-container">

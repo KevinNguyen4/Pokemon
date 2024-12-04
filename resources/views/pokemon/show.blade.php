@@ -8,6 +8,7 @@
 
 </head>
 <body>
+    @include('layouts.header')
     <div class="container">
         <h1>{{ $pokemon->name }} Details</h1>
         <table>

@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    @include('layouts.header')
     <div class="container">
         <h1>Pokémon Quiz - Base Stat Total</h1>
         <form method="POST" action="{{ route('pokemon.baseStatTotal') }}">

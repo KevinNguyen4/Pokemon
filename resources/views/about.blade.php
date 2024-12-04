@@ -10,13 +10,14 @@
 </head>
 
 <body>
+    @include('layouts.header')
     <div class="container">
         <h1>About Me</h1>
         <div class="table-container">
             <p>Hi, I'm Kevin Nguyen. Welcome to my personal page!</p>
 
             <!-- 1. Button to send an email with a 1-day timer -->
-            <form method="POST" action="{{ route('send.email') }}">
+            <form method="POST" action="{{ route('pokemon.email') }}">
                 @csrf
                 <button type="submit" class="button">Send me an email</button>
             </form>

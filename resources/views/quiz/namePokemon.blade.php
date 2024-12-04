@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    @include('layouts.header')
     <div class="container">
         <h1>Pokémon Quiz - Name Pokémon</h1>
         <form method="POST" action="{{ route('quiz.namePokemon') }}">

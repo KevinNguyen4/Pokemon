@@ -108,15 +108,13 @@
         margin-right: 10px;
     }
     .search-form button {
-        border-radius: 10px;
+        /* border-radius: 10px;
         background-color: #2E6F40;
         color: white;
         padding: 5px 10px;
         border: none;
-        cursor: pointer;
-    }
-    .search-form button:hover {
-        background-color: #24532D;
+        cursor: pointer; */
+        font-size: 16px;
     }
 
     /* can be reused for other buttons as well */
