@@ -16,6 +16,7 @@ General
 
     1-make buttons/header for main database page, quiz page, and about page
     2-make it look pretty! put some artwork or pictures or designs on the sides
+    3-some type of framing for the stuff so it's not just text on a background
 
 Backend
 
@@ -42,9 +43,10 @@ Quiz Page
 About Page
 
     1-i guess just all the things that i've listed on the page 
-    2-put a censored resume in public directory named resume_censored.pdf
-    3-put a pic of me in public/images named images/me.jpg
+    2-put a censored resume in public directory named resume_Kevin_Nguyen.pdf
     4-email button not working
+    5-make the resume viewable in browser
+    6-see general point 3, gotta spruce it up a bit
 
 
 
