@@ -11,7 +11,7 @@
     @include('layouts.header')
     <div class="container">
         <h1>Pokémon Quiz - Name Pokémon</h1>
-        <form method="POST" action="{{ route('quiz.namePokemon') }}">
+        <form method="POST" action="{{ route('pokemon.namePokemon') }}">
             @csrf
             <label for="criteria">Enter a criteria (e.g., starts with a letter, type, weakness):</label>
             <input type="text" name="criteria" id="criteria" required>

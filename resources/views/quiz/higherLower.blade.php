@@ -11,7 +11,7 @@
     @include('layouts.header')
     <div class="container">
         <h1>Pokémon Quiz - Higher or Lower Stats</h1>
-        <form method="POST" action="{{ route('quiz.higherLower') }}">
+        <form method="POST" action="{{ route('pokemon.higherLower') }}">
             @csrf
             <label for="stat">Enter a stat (e.g., HP, Attack):</label>
             <input type="text" name="stat" id="stat" required>

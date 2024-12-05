@@ -6,7 +6,7 @@ use App\Models\Pokemon;
 
 class PokemonController extends Controller
 {
-    //search results for pokemon database page(by name, number, type, and ability)
+    //OLD VERSION search results for pokemon database page(by name, number, type, and ability)
     // public function index(Request $request){
     //     $query = $request->input('query');
 
@@ -82,25 +82,6 @@ class PokemonController extends Controller
     //about me page
     public function about(){
         return view('about');
-    }
-
-    public function sendEmail(Request $request)
-    {
-        // Check if the email was sent within the last 24 hours
-        if (Cache::has('email_sent')) {
-            return back()->with('error', 'You can only send an email once every 24 hours.');
-        }
-
-        // Send the email
-        Mail::raw('This is a test email from Kevin Nguyen\'s website.', function ($message) {
-            $message->to('kdn2000job@gmail.com')
-                    ->subject('Test Email from Kevin Nguyen\'s Website');
-        });
-
-        // Store a flag in the cache to prevent sending another email for 24 hours
-        Cache::put('email_sent', true, 86400);
-
-        return back()->with('success', 'Email sent successfully!');
     }
 
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
