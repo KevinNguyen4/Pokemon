@@ -27,7 +27,7 @@
     }
 
     /* for quiz pages*/
-    .container {
+    .quizContainer {
         border: 2px solid #2E6F40;
         border-radius: 5px;
         padding: 10px;

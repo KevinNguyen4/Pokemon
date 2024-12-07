@@ -9,7 +9,7 @@
 
 <body>
     @include('layouts.header')
-    <div class="container">
+    <div class="quizContainer">
         <h1>Pokémon Quiz - Typing</h1>
             <p>Guess any Pokémon that has the typing <strong>{{ implode("/", $randomTypes) }}</strong></p>
         <form method="POST" action="{{ route('pokemon.checkTyping') }}">

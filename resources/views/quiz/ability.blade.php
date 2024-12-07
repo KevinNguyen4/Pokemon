@@ -9,7 +9,7 @@
 
 <body>
     @include('layouts.header')
-    <div class="container">
+    <div class="quizContainer">
         <h1>Pokémon Quiz - Ability</h1>
         <p>Guess any Pokémon that has the ability <strong>{{ $randomAbility }}</strong></p>
         <form method="POST" action="{{ route('pokemon.checkAbility') }}">

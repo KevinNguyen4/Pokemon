@@ -10,7 +10,7 @@
 
 <body>
     @include('layouts.header')
-    <div class="container">
+    <div class="quizContainer">
         <h1>Pokémon Quiz - Name Original Pokémon</h1>
         <p>Name as many of the original 151 Pokémon as you can.</p>
         <input type="text" id="pokemonInput" placeholder="Enter Pokémon name">

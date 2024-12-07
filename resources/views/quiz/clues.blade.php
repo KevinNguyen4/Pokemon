@@ -10,7 +10,7 @@
 
 <body>
     @include('layouts.header')
-    <div class="container">
+    <div class="quizContainer">
         <h1>Pokémon Quiz - Clues</h1>
         <p>Guess the Pokémon based on the clues provided. You have 6 tries.</p>
         <ul id="clues-list">

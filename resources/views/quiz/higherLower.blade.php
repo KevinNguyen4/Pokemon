@@ -9,7 +9,7 @@
 
 <body>
     @include('layouts.header')
-    <div class="container">
+    <div class="quizContainer">
         <h1>Pokémon Quiz - Higher or Lower Stats</h1>
         <p>Does <strong>{{ $pokemon2->name }}</strong> have higher or lower <strong>{{ ucfirst($randomStat) }}</strong> than <strong>{{ $pokemon1->name }}</strong>?</p>
         <form method="POST" action="{{ route('pokemon.checkHigherLower') }}">
