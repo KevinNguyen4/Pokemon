@@ -11,12 +11,21 @@
     @include('layouts.header')
     <div class="container">
         <h1>Pokémon Quiz - Higher or Lower Stats</h1>
-        <form method="POST" action="{{ route('pokemon.higherLower') }}">
+        <p>Does <strong>{{ $pokemon2->name }}</strong> have higher or lower <strong>{{ ucfirst($randomStat) }}</strong> than <strong>{{ $pokemon1->name }}</strong>?</p>
+        <form method="POST" action="{{ route('pokemon.checkHigherLower') }}">
             @csrf
-            <label for="stat">Enter a stat (e.g., HP, Attack):</label>
-            <input type="text" name="stat" id="stat" required>
-            <button type="submit">Submit</button>
+            <input type="hidden" name="pokemon1_id" value="{{ $pokemon1->id }}">
+            <input type="hidden" name="pokemon2_id" value="{{ $pokemon2->id }}">
+            <input type="hidden" name="random_stat" value="{{ $randomStat }}">
+            <button type="submit" name="guess" value="higher" class="button">Higher</button>
+            <button type="submit" name="guess" value="lower" class="button">Lower</button>
         </form>
+        @if(session('success'))
+            <p style="color: green;">{{ session('success') }}</p>
+        @endif
+        @if(session('error'))
+            <p style="color: red;">{{ session('error') }}</p>
+        @endif
     </div>
 </body>
 </html>

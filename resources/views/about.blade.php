@@ -34,7 +34,7 @@
             <h2>About Kevin Nguyen</h2>
             <p>
                 Hello! I'm a 24 year old software developer that likes to do small passion projects like this in my free time and explore
-                different technologies. I want to do a google chrome extension project, game development, and API work next. I'm also 
+                different technologies. I want to do a Google chrome extension project, game development, and API work next. I'm also 
                 pursuing an <b>AWS cloud practitioner certification</b>. 
                 <br><br>
                 I'm currently looking for a <b>full-time software developer position</b>.
@@ -69,7 +69,6 @@
                 This is all done from scratch, solo, and on github.
                 <br><br>
                 It goes more in depth than just showing basic information like type, for example showing weaknesses, common moves, and abilities.
-                This is more geared towards competitive Pokemon/VGC than casual play.
                 It also has quizzes to test your pokemon knowledge!
             </p>
             <br><br>

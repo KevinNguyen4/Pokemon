@@ -15,6 +15,7 @@ To Do List
 General
 
     2-TO ALL PAGES: make it look pretty! put some artwork or pictures or designs on the sides
+    3-SEE WHO CLICKS ON ABOUT ME/ CLICK METRICS
 
 Backend
 
@@ -36,7 +37,8 @@ Show/detail Page
 Quiz Page
 
     1-make the page look nicer somehow
-    2-implement the logic for the games
+    3-using the back button does not work(top left of browser)
+    
 
 About Page
 
@@ -56,3 +58,4 @@ Other projects:
 League of legends extension?
 Google chrome extension
 card game, turn based game with health, attack, some effects, items, kinda like hearthstone
+dokapon clone

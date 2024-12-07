@@ -11,12 +11,36 @@
     @include('layouts.header')
     <div class="container">
         <h1>Pokémon Quiz - Typing</h1>
-        <form method="POST" action="{{ route('pokemon.typing') }}">
+            <p>Guess any Pokémon that has the typing <strong>{{ implode("/", $randomTypes) }}</strong></p>
+        <form method="POST" action="{{ route('pokemon.checkTyping') }}">
             @csrf
-            <label for="typing">Enter a typing (e.g., Fire/Rock):</label>
-            <input type="text" name="typing" id="typing" required>
+
+                <input type="hidden" name="types[]" value="{{ $randomTypes[0] }}">
+                @if (count($randomTypes) > 1)
+                    <input type="hidden" name="types[]" value="{{ $randomTypes[1] }}">
+                @endif
+
+            <label for="pokemon_name">Enter Pokémon name:</label>
+            <input type="text" name="pokemon_name" id="pokemon_name" required>
             <button type="submit">Submit</button>
         </form>
+        <form method="POST" action="{{ route('pokemon.checkTyping') }}">
+            @csrf
+
+                <input type="hidden" name="types[]" value="{{ $randomTypes[0] }}">
+                @if (count($randomTypes) > 1)
+                    <input type="hidden" name="types[]" value="{{ $randomTypes[1] }}">
+                @endif
+
+            <input type="hidden" name="pokemon_name" value="">
+            <button type="submit">This typing does not exist</button>
+        </form>
+        @if(session('success'))
+            <p style="color: green;">{{ session('success') }}</p>
+        @endif
+        @if(session('error'))
+            <p style="color: red;">{{ session('error') }}</p>
+        @endif
     </div>
 </body>
 </html>
