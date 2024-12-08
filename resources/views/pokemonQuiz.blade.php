@@ -17,12 +17,12 @@
             <div class="quiz-content">
                 <h2>Pick a quiz:</h2><br><br>
                 <ul>
-                    <li><a href="{{ route('pokemon.baseStatTotal') }}" class="button">Name a Pokémon that has this base stat total</a></li><br><br>
-                    <li><a href="{{ route('pokemon.ability') }}" class="button">Name a Pokémon that has this ability</a></li><br><br>
-                    <li><a href="{{ route('pokemon.typing') }}" class="button">Name a Pokémon that has this typing</a></li><br><br>
                     <li><a href="{{ route('pokemon.higherLower') }}" class="button">Higher or Lower Stats</a></li><br><br>
                     <li><a href="{{ route('pokemon.namePokemon') }}" class="button">Name as many of the original 151 as you can</a></li><br><br>
                     <li><a href="{{ route('pokemon.clues') }}" class="button">Guess the Pokémon based on clues</a></li><br><br>
+                    <li><a href="{{ route('pokemon.baseStatTotal') }}" class="button">Name a Pokémon that has this base stat total</a></li><br><br>
+                    <li><a href="{{ route('pokemon.ability') }}" class="button">Name a Pokémon that has this ability</a></li><br><br>
+                    <li><a href="{{ route('pokemon.typing') }}" class="button">Name a Pokémon that has this typing</a></li><br><br>
                 </ul>
             </div>
         </div>

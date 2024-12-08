@@ -36,7 +36,6 @@ Show/detail Page
 
 Quiz Page
 
-    1-make the page look nicer somehow
     3-using the back button does not work(top left of browser)
     
 
