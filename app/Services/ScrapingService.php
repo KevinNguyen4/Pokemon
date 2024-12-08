@@ -382,10 +382,10 @@ class ScrapingService
 
     //scrape pokemon moves, items, popular ability from pikalytics and insert
     //things like rotom-wash and lilligant-hisui dont work cuz the names dont match up(and ditto is funky)
-    public function scrapePokemonMoves()
-    {
+    public function scrapePokemonMoves(){
 
         //CHANGE THIS TO WHATEVER FORMAT YOU WANT
+        //can also change this, then use update/something like that if i want to compile lots of different VGC formats
         $baseUrl = 'https://pikalytics.com/pokedex/gen9vgc2024regh/';
 
         
@@ -400,8 +400,8 @@ class ScrapingService
         }
     }
 
-    private function scrapePokemonDataFromPage($url)
-    {
+    //main function of scrapePokemonMoves
+    private function scrapePokemonDataFromPage($url){
         $crawler = $this->client->request('GET', $url);
 
         // Check if the page exists
@@ -460,6 +460,7 @@ class ScrapingService
         // Find the corresponding Pokémon in the database
         $pokemon = $this->findClosestPokemon($name);
 
+        //put in the data
         if ($pokemon) {
             $pokemon->update([
                 'popular_ability' => $ability,
@@ -470,9 +471,8 @@ class ScrapingService
         }
 
     }
+
+
+
 }
-
-
-
-
 

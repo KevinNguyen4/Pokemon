@@ -9,14 +9,20 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 </head>
 
+
 <body>
+    @include('layouts.header')
     <div class="container">
         <h1>Pokémon Database</h1>
         <form method="GET" action="{{ route('pokemon.search') }}" class="search-form">
             <input type="text" name="query" placeholder="Search by name or number" value="{{ request('query') }}">
+            <input type="text" name="type" placeholder="Search by type" value="{{ request('type') }}">
+            <input type="text" name="ability" placeholder="Search by ability" value="{{ request('ability') }}">
             <button class="button" type="submit">Search</button>
             <a href="{{ route('pokemon.search') }}" class="button">Clear</a>
         </form>
+        
+
         <div class="table-container">
             <table>
                 <thead>
