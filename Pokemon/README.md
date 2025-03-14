@@ -67,4 +67,4 @@ f
 
 
 Making a battle simulator
--team does not carry over to battle page from battle sim
+-team does not carry over to battle page from battle simf
